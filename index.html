@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>WHEN IT</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: black;
+        }
+
+        video, .footer {
+            position: fixed;
+            left: 0;
+            width: 100%;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        video {
+            top: 0;
+            height: 100%;
+            object-fit: fill;
+        }
+
+        .footer, .credits, .gamer, body {
+            color: white;
+        }
+
+        .footer {
+            background-color: rgba(0, 0, 0, 0.5);
+            bottom: 0;
+        }
+
+        #nice {
+            display: none;
+            float: left;
+        }
+
+        .credits {
+            float: right;
+        }
+
+        #nice, .credits {
+            padding: 3px;
+        }
+    </style>
+    <script>
+        /*! modernizr 3.6.0 (Custom Build) | MIT *
+        * https://modernizr.com/download/?-promises-setclasses !*/
+        !function(n,e,s){function o(n,e){return typeof n===e}function i(){var n,e,s,i,a,f,l;for(var c in r)if(r.hasOwnProperty(c)){if(n=[],e=r[c],e.name&&(n.push(e.name.toLowerCase()),e.options&&e.options.aliases&&e.options.aliases.length))for(s=0;s<e.options.aliases.length;s++)n.push(e.options.aliases[s].toLowerCase());for(i=o(e.fn,"function")?e.fn():e.fn,a=0;a<n.length;a++)f=n[a],l=f.split("."),1===l.length?Modernizr[l[0]]=i:(!Modernizr[l[0]]||Modernizr[l[0]]instanceof Boolean||(Modernizr[l[0]]=new Boolean(Modernizr[l[0]])),Modernizr[l[0]][l[1]]=i),t.push((i?"":"no-")+l.join("-"))}}function a(n){var e=l.className,s=Modernizr._config.classPrefix||"";if(c&&(e=e.baseVal),Modernizr._config.enableJSClass){var o=new RegExp("(^|\\s)"+s+"no-js(\\s|$)");e=e.replace(o,"$1"+s+"js$2")}Modernizr._config.enableClasses&&(e+=" "+s+n.join(" "+s),c?l.className.baseVal=e:l.className=e)}var t=[],r=[],f={_version:"3.6.0",_config:{classPrefix:"",enableClasses:!0,enableJSClass:!0,usePrefixes:!0},_q:[],on:function(n,e){var s=this;setTimeout(function(){e(s[n])},0)},addTest:function(n,e,s){r.push({name:n,fn:e,options:s})},addAsyncTest:function(n){r.push({name:null,fn:n})}},Modernizr=function(){};Modernizr.prototype=f,Modernizr=new Modernizr;var l=e.documentElement,c="svg"===l.nodeName.toLowerCase();Modernizr.addTest("promises",function(){return"Promise"in n&&"resolve"in n.Promise&&"reject"in n.Promise&&"all"in n.Promise&&"race"in n.Promise&&function(){var e;return new n.Promise(function(n){e=n}),"function"==typeof e}()}),i(),a(t),delete f.addTest,delete f.addAsyncTest;for(var u=0;u<Modernizr._q.length;u++)Modernizr._q[u]();n.Modernizr=Modernizr}(window,document);
+    </script>
+    <script>
+        /* Yes, this is written awfully.
+        This is because it is designed to support ancient browsers because I thought it would be funny. */
+
+        var v;
+        var n;
+
+        window.onload = function () {
+            var dayNum = new Date().getDay();
+            var day;
+
+            if (dayNum == 0) day = "SUNDAY";
+            if (dayNum == 1) day = "MONDAY";
+            if (dayNum == 2) day = "TUESDAY";
+            if (dayNum == 3) day = "WEDNESDAY";
+            if (dayNum == 4) day = "THURSDAY";
+            if (dayNum == 5) day = "FRIDAY";
+            if (dayNum == 6) day = "SATURDAY";
+
+            day = "SATURDAY";
+
+            document.title = "WHEN IT " + day;
+
+            v = document.getElementById('video');
+            n = document.getElementById('nice');
+            if (!day) document.body.textContent = "there is no day";
+            else {
+                v.src = './when-it/' + day.toLowerCase() + '.mp4';
+                v.addEventListener('canplay', function () {
+                    tryPlay();
+
+                    setInterval(function () {
+                        if (v.paused) tryPlay();
+                    }, 100);
+                });
+            }
+        }
+
+        function tryPlay() {
+            if (Modernizr.promises) {
+                v.play().catch(function (error) {
+                    if (error.name === "NotAllowedError") {
+                        n.style.display = 'unset';
+                        v.muted = true;
+                        tryPlay();
+                        // do
+                    }
+                });
+            } else v.play();
+        }
+
+        window.addEventListener('click', function () {
+            if (v.muted) {
+                v.muted = false;
+                n.style.display = 'none';
+            } else {
+                v.muted = true;
+                n.style.display = 'unset';
+            }
+            
+            tryPlay();
+        });
+    </script>
+</head>
+
+<body>
+    <video id="video" autoplay loop playsinline></video>
+    <div class="footer">
+        <span id="nice">Click screen for Audio.</span>
+        <span class="credits"><a class="gamer" href="https://twitter.com/PikaDude01" target="_blank">Website made by PikaDude.</a> The videos and music used do not belong to me.</span>
+    </div>
+</body>
+
+</html>
